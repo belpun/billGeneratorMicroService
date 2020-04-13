@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS Item;
+ 
+CREATE TABLE Item (
+  id INT  PRIMARY KEY,
+  name VARCHAR(250) NOT NULL,
+  price numeric NOT NULL
+);
