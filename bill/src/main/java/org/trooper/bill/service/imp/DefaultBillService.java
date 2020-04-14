@@ -25,25 +25,19 @@ public class DefaultBillService implements BillService{
 	
 	public Bill getBill(Long customerId, LocalDate transactionDate) {
 		
-		Customer customer = this.restTemplate.getForObject("http://localhost:8082/customer/" + customerId, Customer.class);
+		Customer customer = this.restTemplate.getForObject("http://customer-info-service/customer/" + customerId, Customer.class);
 		System.out.println(customer);
 		List<Transaction> transactions = this.transactionRepository.findById_CustomerIdAndId_TransactionDate(customerId, transactionDate);
 		
 		
 		Map<Long, Item> items = transactions.stream()
 		.map(transaction -> 
-			this.restTemplate.getForObject("http://localhost:8081/item/" + transaction.getId().getItemId(), Item.class)
+			this.restTemplate.getForObject("http://item-catalogue-service/item/" + transaction.getId().getItemId(), Item.class)
 			).collect(Collectors.toMap(Item::getId, item -> item));
 		
 		Bill bill = new Bill(customer, transactionDate, items, transactions);
 		return bill;
 		
 	}
-
-	private void constructBill(Customer customer, List<Transaction> transactions, Map<Integer, Item> items) {
-		
-		
-	}
-
 	
 }

@@ -20,9 +20,4 @@ public class CustomerResource {
 		return customerService.findCustomer(customerId)
 				.orElseThrow(() -> new RuntimeException("Cannot find the customer"));
 	}
-	
-	@GetMapping(value = "test")
-	public String test() {
-		return "test passed";
-	}
 }

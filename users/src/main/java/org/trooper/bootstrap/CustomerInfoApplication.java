@@ -11,10 +11,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan(basePackages = "org.trooper")
 @EnableJpaRepositories(basePackages = "org.trooper.dao")
 @EntityScan(basePackages = "org.trooper.entity")
-public class UsersApplication {
+public class CustomerInfoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(UsersApplication.class, args);
+		SpringApplication.run(CustomerInfoApplication.class, args);
 	}
 
 }
