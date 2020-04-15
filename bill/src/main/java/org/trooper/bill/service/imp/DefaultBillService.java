@@ -14,6 +14,8 @@ import org.trooper.bill.entity.Item;
 import org.trooper.bill.entity.Transaction;
 import org.trooper.bill.repository.TransactionRepository;
 import org.trooper.bill.service.api.BillService;
+import org.trooper.bill.service.api.CustomerService;
+import org.trooper.bill.service.api.ItemService;
 @Service
 public class DefaultBillService implements BillService{
 
@@ -23,16 +25,24 @@ public class DefaultBillService implements BillService{
 	@Autowired
 	private TransactionRepository transactionRepository;
 	
+	@Autowired
+	private CustomerService customerService;
+	
+	
+	@Autowired
+	private ItemService itemService;
+	
+	
 	public Bill getBill(Long customerId, LocalDate transactionDate) {
 		
-		Customer customer = this.restTemplate.getForObject("http://customer-info-service/customer/" + customerId, Customer.class);
-		System.out.println(customer);
+		Customer customer = customerService.getCustomer(customerId);
+		
 		List<Transaction> transactions = this.transactionRepository.findById_CustomerIdAndId_TransactionDate(customerId, transactionDate);
 		
 		
 		Map<Long, Item> items = transactions.stream()
 		.map(transaction -> 
-			this.restTemplate.getForObject("http://item-catalogue-service/item/" + transaction.getId().getItemId(), Item.class)
+		  		this.itemService.getItem(transaction.getId().getItemId())
 			).collect(Collectors.toMap(Item::getId, item -> item));
 		
 		Bill bill = new Bill(customer, transactionDate, items, transactions);

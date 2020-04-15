@@ -57,10 +57,9 @@ public class Bill {
 		this.items = items;
 	}
 	
-
 	public String printBill() {
 		StringBuilder report = new StringBuilder();
-		report.append("Bill for date : " + transactionDate + " \n");
+		report.append("Bill for " + customer.getFirstName() + " " + customer.getLastName() + "date : " + transactionDate + " \n");
 		this.transactions.forEach(transaction -> {
 			Item item = items.get(transaction.getId().getItemId());
 			report.append(item.getName() + "    " + transaction.getItemPrice() + "    " + transaction.getQuantity()
