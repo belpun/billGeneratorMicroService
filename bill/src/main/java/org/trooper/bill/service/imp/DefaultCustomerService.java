@@ -17,6 +17,11 @@ public class DefaultCustomerService implements CustomerService {
 
 	@Override
 	@HystrixCommand(fallbackMethod = "fallBackGetCustomer",
+	threadPoolKey = "customerServicePool",
+	threadPoolProperties = {
+			@HystrixProperty(name="coreSize", value="20"),
+			@HystrixProperty(name="maxQueueSize", value="10")
+	},
 	commandProperties = {
 			@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "2000"), 
 			@HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "5"), 
